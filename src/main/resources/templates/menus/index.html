@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: headerHead">
+  <title>Menus</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <h1>Menus</h1>
+  <a th:href="@{/menus/add}" class="btn btn-primary">Add new</a>
+  <table class="table table-striped">
+    <thead  class="thead-dark">
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Total Calories</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tr th:each="menu: ${menus}">
+      <td th:text="${menu.MenuId}" />
+      <td th:text="${menu.Title}" />
+      <td th:text="${menu.getTotalCalories()}" />
+      <td>
+        <a th:href="@{/menus/get/{id}/(id=${menu.MenuId})}" class="btn btn-primary">Details</a>
+        <a th:href="@{/menus/edit/{id}/(id=${menu.MenuId})}" class="btn btn-warning">Edit</a>
+        <a th:href="@{/menus/delete/{id}/(id=${menu.MenuId})}" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="container">
+  <div align="center">
+    <h1>Menus</h1>
+    <form action="#" th:action="@{/menus/add}" method="post" th:object="${menu}" class="form-group">
+      <label>Title:</label>
+      <input type="text" th:field="*{Title}" class="form-control" /><br/>
+      <select id="Products" th:field="*{Products}" multiple="multiple" class="form-control">
+        <option th:each="product : ${allProducts}"
+                th:value="${product.ProductId}" th:text="|${product.ProductId} - ${product.Title} - ${product.Calories}|">
+        </option>
+      </select><br>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <h1>Menu <span th:utext="${item.MenuId}" ></span></h1>
+  <label>ID: <span th:utext="${item.MenuId}" ></span></label><br>
+  <label>Title: <span th:utext="${item.Title}" ></span></label><br>
+  <h2>Products in menu</h2>
+  <p th:each="product: ${products}" ><span th:text="${product.Title}" ></span> - <span th:text="${product.Calories}" ></span></p>
+</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <div align="center">
+    <h1>Menus</h1>
+    <form action="#" th:action="@{/menus/edit}" method="post" th:object="${menu}">
+      <label>Title:</label>
+      <input type="text" th:field="*{Title}" class="form-control" /><br/>
+      <select id="Products" th:field="*{Products}" multiple="multiple">
+        <option th:each="product : ${allProducts}"
+                th:value="${product.ProductId}" th:text="|${product.ProductId} - ${product.Title} - ${product.Calories}|" >
+        </option>
+      </select>
+      <input type="hidden" th:field="*{MenuId}" /><br/>
+      <button type="submit" class="btn btn-primary">Edit</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

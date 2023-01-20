@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: headerHead">
+  <title>Calculation</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <h1>Calculation <span th:utext="${item.CalculationId}"></span></h1>
+  <label>ID: <span th:utext="${item.CalculationId}"></span></label><br>
+  <label>Height: <span th:utext="${item.Height}"></span></label><br>
+  <label>Weight: <span th:utext="${item.Weight}"></span></label><br>
+  <label>Age: <span th:utext="${item.Age}"></span></label><br>
+  <label>Calories Intake: <span th:utext="${item.CaloriesIntake}"></span></label><br>
+  <label>Extra Calories: <span th:utext="${item.ExtraCalories}"></span></label><br>
+  <label>Menu Id: <span th:utext="${item.MenuId}"></span></label>
+  <h2>Products in Menu</h2>
+  <p th:each="product: ${products}"><span th:text="${product.Title}"></span> - <span th:text="${product.Calories}"></span></p>
+  <strong>Total: <span th:text="${totalCalories}"></span></strong>
+</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <h1>Calculations</h1>
+  <a th:href="@{/calculations}" class="btn btn-primary">Calculate</a>
+  <table class="table table-striped">
+    <thead  class="thead-dark">
+    <tr>
+      <th>Id</th>
+      <th>Height</th>
+      <th>Weight</th>
+      <th>Age</th>
+      <th>Calories Intake</th>
+      <th>Extra Calories</th>
+      <th>Menu Id</th>
+      <th>Actions</th>
+    </tr></thead>
+    <tr th:each="calculation: ${calculations}">
+      <td th:text="${calculation.CalculationId}" />
+      <td th:text="${calculation.Height}" />
+      <td th:text="${calculation.Weight}" />
+      <td th:text="${calculation.Age}" />
+      <td th:text="${calculation.CaloriesIntake}" />
+      <td th:text="${calculation.ExtraCalories}" />
+      <td th:text="${calculation.MenuId}" />
+      <td>
+        <a th:href="@{/calculations/get/{id}/(id=${calculation.Calculation_ID})}" class="btn btn-primary">Details</a>
+        <a th:href="@{/calculations/delete/{id}/(id=${calculation.Calculation_ID})}" class="btn btn-danger">Delete</a>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+  <div align="center">
+    <h1>Calculate intake</h1>
+    <form action="#" th:action="@{/calculations/add}" method="post" th:object="${calculation}" class="form-group">
+      <label>Height:</label>
+      <input type="text" th:field="*{Height}" class="form-control" /><br/>
+      <label>Weight:</label>
+      <input type="text" th:field="*{Weight}" class="form-control" /><br/>
+      <label>Age:</label>
+      <input type="text" th:field="*{Age}" class="form-control" /><br/>
+      <label>Menu:</label>
+      <select id="MenuId" th:field="*{MenuId}" class="form-control">
+        <option th:each="menu : ${allMenus}"
+                th:value="${menu.MenuId}" th:text="|${menu.MenuId} - ${menu.Title}|">
+        </option>
+      </select><br>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
